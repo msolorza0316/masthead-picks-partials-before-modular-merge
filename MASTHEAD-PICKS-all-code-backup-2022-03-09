@@ -1,0 +1,207 @@
+<style>
+.pick {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+.luna-card__topPick {
+padding-top: 1em !important;
+padding-bottom: 1em !important;
+padding-left: 1em !important;
+padding-right: 1em !important;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  white-space: nowrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: nowrap; 
+  overflow: auto;
+}
+
+.flex-item {
+  flex: 0 0 auto;
+}
+
+.zoom {
+  transition: transform .2s; 
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(1.026);
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+
+.mastheadPick-item {
+  margin: 5px !important; 
+  width: calc(96% / {{max_products}}) !important;
+}
+
+.luna-author{
+padding: 20px;
+}
+
+@media (max-width:801px)  { 
+.mastheadPick-item {
+  margin: 5px !important; 
+  width: 44% !important;
+}
+}
+
+@media (max-width:481px)  { 
+.mastheadPick-item {
+  margin: 5px !important; 
+  width: 80% !important;
+}
+}
+</style>
+
+{% if product_id !="" %}
+    {% set productID = product_id %}
+{% endif %}
+
+{% if niche_code !="" %}
+    {% set nicheID = niche_code %}
+{% endif %}
+
+{% if max_products is not defined %}
+    {% set max_products = 4 %}
+{% endif %}
+
+{% if decoratorid_1 !="" %}
+    {% set decoratorID1 = decoratorid_1 %}
+{% endif %}
+
+{% if decoratorid_2 !="" %}
+    {% set decoratorID2 = decoratorid_2 %}
+{% endif %}
+
+{% if decoratorid_1_name !="" %}
+    {% set decoratorID1_name = decoratorid_1_name %}
+{% endif %}
+
+{% if decoratorid_2_name !="" %}
+    {% set decoratorID2_name = decoratorid_2_name %}
+{% endif %}
+
+{% if why_we_chose_this !="" %}
+    {% set expertQuote = why_we_chose_this %}
+{% endif %}
+
+{% if product_ids is defined %}
+    {% set productIds = product_ids|split(',') %}
+    {% set top = top|split(',') %}
+    {% set topText = top_text|split(',') %}
+    {% set expertQuote = why_we_chose_this|split(';') %}
+
+
+    <div class="container flex">
+
+    {% for productID in productIds|slice(0, max_products)  %}
+
+    <article class="luna-card luna-card--border luna-card--stretch mastheadPick-item flex-item zoom">
+{% if top[loop.index0] == "Blue" %}
+<div style="width: 100%; background-color: #0271e1">
+<p style="color: #FFF; text-align: center; margin: 0.3em; font-size: 1em; font-weight: 500;">
+{{topText[loop.index0]}}
+</p>
+</div>
+{% elseif top[loop.index0] == "Gray" %}
+<div style="width: 100%; background-color: #f4f5f6">
+<p style="color: #6c7881; text-align: center; margin: 0.3em; font-size: 1em; font-weight: 500;">
+{{topText[loop.index0]}}
+</p>
+</div>
+{% elseif top[loop.index0] == "Green" %}
+<div style="width: 100%; background-color: #008774">
+<p style="color: #FFF; text-align: center; margin: 0.3em; font-size: 1em; font-weight: 500;">
+{{topText[loop.index0]}}
+</p>
+</div>
+{% elseif top[loop.index0] == "Yellow" %}
+<div style="width: 100%; background-color: #ffcd05">
+<p style="color: #242a2f; text-align: center; margin: 0.3em; font-size: 1em; font-weight: 500;">
+{{topText[loop.index0]}}
+</p>
+</div>
+{% endif %}
+
+      <div class="luna-card__block luna-card__topPick">
+    <center>
+<div style="width: 100px;height: 70px;">
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="GLOBAL.PRODUCT.USFIN_IMAGE"]') }}
+</div>
+</center>
+
+<p style="margin: 0.5em; color: #6c7881; font-size: 0.9em; text-align: center; white-space: normal; height: 45px;">{{ do_shortcode_twig('[nb:value niche_code="' ~ nicheID ~ '" record_type="PRODUCT" record_id="' ~ productID ~ '" field="GENERAL.NAME" decorator="GLOBAL.VALUE.TEXT"]') }}</span>
+<div class="star-rating-section" style="height: 50px;">
+<p style="letter-spacing: 0.3em; text-align: center; margin: 0.2em;">
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="GLOBAL.PRODUCT.USFIN_STAR_RATINGS" TYPE="STARS" STARS="YELLOW"]') }}
+</p>
+<p style="margin-bottom: 0;font-size: 1em; font-weight: 500; text-align: center; margin: 0.2em;">
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="GLOBAL.PRODUCT.USFIN_STAR_RATINGS" TYPE="RATINGS" LABEL="Finder rating"]') }}
+</p>
+</div>
+
+{% if why_we_chose_this is not null and why_we_chose_this is not empty %}
+{% if expertQuote[loop.index0] !="" %}
+<center style="padding-top:1em;">
+<p style="height:180px; white-space: normal; padding-top:0.5em; font-size: 1em; color: #0271e1; display: flex; justify-content: center; align-items: center;">
+"{{expertQuote[loop.index0]}}"
+</p>
+{% if author_name !="" %}
+<div class="luna-author"><img class="luna-avatar luna-avatar--small luna-avatar--greyscale" src="{{ author_img }}" alt="Author: {{ author_name }}">
+  <div class="luna-author__details"><address>by <a href="{{ author_page }}" rel="author">{{ author_name }}</a></address></div>
+</div>
+{% endif %}
+</center>
+{% else %}
+<div style="height:160px; padding-top:1em;">
+</div>
+{% endif %}
+{% else %}
+<div style="padding-top:0.5em;"></div>
+{% endif %}
+
+{% if decoratorID1_name !="" %}
+<div class="u-grid u-grid--alignMiddle" style="height: 80px;">
+  <div class="u-grid__col u-1/2">
+<p style="margin-bottom: 0; font-size: 0.9em; font-weight: 500; margin: 0.2em; white-space: normal;">
+{{decoratorID1_name}}
+</p>
+</div>
+  <div class="u-grid__col u-1/2">
+<p style="margin-bottom: 0; font-size: 20px; text-align: right; margin: 0.2em; white-space: normal;">
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="' ~ decoratorID1 ~ '"]') }}
+</p>
+  </div>
+  </div>
+{% endif %}
+{% if decoratorID2_name !="" %}
+<div class="u-grid u-grid--alignMiddle" style="height: 80px;">
+  <div class="u-grid__col u-1/2">
+<p style="margin-bottom: 0; font-size: 0.9em; font-weight: 500; margin: 0.2em; white-space: normal;">
+{{decoratorID2_name}}
+</p>
+</div>
+  <div class="u-grid__col u-1/2">
+<p style="margin-bottom: 0; font-size: 10px; text-align: right; margin: 0.2em; white-space: normal;">
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="' ~ decoratorID2 ~ '"]') }}
+</p>
+  </div>
+  </div>
+{% endif %}
+{{ do_shortcode_twig('[nb:product niche_code="' ~ nicheID ~ '" record_type="PRODUCT" id="' ~ productID ~ '" decorator="GLOBAL.PRODUCT.USFIN_REDIRECT_BUTTON"]') }}
+      </div>
+    </article>
+
+    {% endfor %}
+    </div>
+{% endif %}
